@@ -1,0 +1,6 @@
+{
+  "name": "Blood Bridge",
+  "description": "Smart blood donation and blood bank network connecting donors, blood banks, hospitals, and patients with intelligent matching, GPS tracking, and QR inventory.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

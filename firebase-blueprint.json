@@ -1,0 +1,90 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with authentication and role information",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 150 },
+        "role": { "type": "string", "enum": ["donor", "blood_bank", "hospital", "patient"] },
+        "phone": { "type": "string", "maxLength": 20 },
+        "bloodGroup": { "type": "string", "enum": ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "email", "role"]
+    },
+    "Donor": {
+      "title": "Donor",
+      "description": "Registered voluntary blood donor record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 150 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "bloodGroup": { "type": "string", "enum": ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] },
+        "gender": { "type": "string", "enum": ["Male", "Female", "Other"] },
+        "age": { "type": "number" },
+        "weightKg": { "type": "number" },
+        "location": { "type": "object" },
+        "availability": { "type": "string", "enum": ["Available Now", "On Call", "Unavailable"] },
+        "lastDonationDate": { "type": "string" },
+        "lastDonationType": { "type": "string" },
+        "donationCount": { "type": "number" },
+        "verified": { "type": "boolean" },
+        "responseRate": { "type": "number" },
+        "badges": { "type": "array" },
+        "privacyPhoneVisible": { "type": "boolean" },
+        "registeredDate": { "type": "string" }
+      },
+      "required": ["id", "name", "bloodGroup", "phone", "availability"]
+    },
+    "EmergencyRequest": {
+      "title": "EmergencyRequest",
+      "description": "Urgent hospital and patient blood requirements",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "patientName": { "type": "string", "maxLength": 100 },
+        "patientAge": { "type": "number" },
+        "bloodGroup": { "type": "string", "enum": ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] },
+        "component": { "type": "string" },
+        "unitsRequired": { "type": "number" },
+        "unitsArranged": { "type": "number" },
+        "urgency": { "type": "string", "enum": ["Critical", "Urgent", "Standard"] },
+        "requiredWithinHours": { "type": "number" },
+        "hospitalId": { "type": "string" },
+        "hospitalName": { "type": "string" },
+        "hospitalAddress": { "type": "string" },
+        "hospitalLocation": { "type": "object" },
+        "contactPerson": { "type": "string" },
+        "contactPhone": { "type": "string" },
+        "reasonForRequirement": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pending", "Matching", "Donor Responded", "Blood Arranged", "Fulfilled", "Cancelled"] },
+        "createdAt": { "type": "string" },
+        "replacementDonorsNeeded": { "type": "number" },
+        "arrangedDonors": { "type": "number" },
+        "replacementSlots": { "type": "array" },
+        "respondingDonorIds": { "type": "array" }
+      },
+      "required": ["id", "patientName", "bloodGroup", "unitsRequired", "urgency", "hospitalName", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "User profile document containing authentication and account settings"
+    },
+    "/donors/{donorId}": {
+      "schema": { "$ref": "#/entities/Donor" },
+      "description": "Registered blood donors directory for emergency matching"
+    },
+    "/emergency_requests/{requestId}": {
+      "schema": { "$ref": "#/entities/EmergencyRequest" },
+      "description": "Emergency blood requests from hospitals and patients"
+    }
+  }
+}
